@@ -1,0 +1,826 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vereins-Abrechnung</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0f172a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Vereins-Abrechnung">
+<link rel="apple-touch-icon" href="icon-192.svg">
+
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0f172a;color:#f1f5f9;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif}.app{max-width:640px;margin:auto;padding:14px 14px 120px}header{position:sticky;top:0;background:#1f2937;margin:-14px -14px 14px;padding:14px;border-bottom:2px solid #374151;display:flex;gap:8px;z-index:5}h1{font-size:21px;margin:0;flex:1}.back,.mini{background:#374151;color:white;border:0;border-radius:9px;padding:9px 13px;font-weight:800}.card,.item{background:#1f2937;border:1px solid #374151;border-radius:14px;padding:14px;margin:9px 0}.item{background:#111827;cursor:pointer}.sec{background:linear-gradient(90deg,#334155,#1e293b);border-left:6px solid #60a5fa;border-radius:10px;padding:12px 16px;margin:24px 0 12px;font-weight:900;font-size:18px;color:#f8fafc}.grid{display:grid;gap:9px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.tile{background:#1f2937;color:white;border:2px solid #374151;border-radius:14px;padding:16px 8px;font-size:17px;font-weight:900;min-height:64px}.tabtile{background:linear-gradient(135deg,#312e81,#1e3a8a);border-color:#60a5fa;box-shadow:0 6px 18px rgba(59,130,246,.25)}.tabtile.sel{background:linear-gradient(135deg,#2563eb,#1d4ed8);border-color:#bfdbfe;transform:scale(1.02)}.sel{background:#2563eb;border-color:#60a5fa}.sub{display:block;color:#cbd5e1;font-size:12px;margin-top:3px}.btn{width:100%;border:0;border-radius:14px;padding:15px;font-size:18px;font-weight:900;margin-top:9px}.pri{background:#2563eb;color:white}.ok{background:#16a34a;color:white}.bad{background:#6b7280;color:white}.secbtn{background:#374151;color:white}.warn{background:#ea580c;color:white}.lab{display:block;color:#94a3b8;font-size:13px;font-weight:900;text-transform:uppercase;margin:14px 0 6px}input,select,textarea{width:100%;padding:14px;border:2px solid #374151;border-radius:12px;background:#1f2937;color:white;font-size:17px}textarea{min-height:70px}.row{display:flex;justify-content:space-between;align-items:center;gap:8px}.title{font-size:18px;font-weight:900}.muted{color:#94a3b8;font-size:14px;margin-top:3px}.badge{display:inline-block;border-radius:6px;padding:4px 8px;font-size:12px;font-weight:900;background:#374151}.green{background:#166534}.orange{background:#92400e}.red{background:#991b1b}.blue{background:#1e40af}.money{color:#86efac;font-weight:900}.inv{display:flex;flex-direction:column;gap:7px;margin-top:10px}.inv div{display:flex;justify-content:space-between;background:#111827;border:1px solid #374151;border-radius:10px;padding:9px 11px}.paid{background:#064e3b;border-color:#22c55e}.paid .inv div{background:#052e2b;border-color:#166534}.fab{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(to top,#0f172a 70%,transparent);display:flex;gap:8px;padding:12px}.fab .btn{margin:0;width:auto}.grow{flex:1}.month{display:flex;justify-content:space-between;align-items:center;margin:10px 0}.month b{font-size:20px}.cal-wrap{background:#111827;border:1px solid #334155;border-radius:18px;padding:12px;margin-bottom:26px;box-shadow:0 10px 24px rgba(0,0,0,.25)}.selected-wrap{background:linear-gradient(180deg,#172554,#0f172a);border:1px solid #3b82f6;border-radius:20px;padding:22px 14px 18px;margin-top:26px;margin-bottom:8px;box-shadow:0 10px 28px rgba(37,99,235,.18)}.selected-title{background:linear-gradient(90deg,#334155,#1e293b);border-left:6px solid #60a5fa;border-radius:10px;padding:12px 16px;margin:0 0 18px;font-weight:900;font-size:18px;color:#f8fafc}.one-card{margin-top:56px}.calh,.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}.calh div{text-align:center;color:#94a3b8;font-size:12px;font-weight:900}.day{border:1px solid #374151;background:#1f2937;color:white;border-radius:9px;min-height:52px;font-weight:900}.day small{display:block;font-size:10px;color:#e5e7eb}.empty{background:transparent;border:0}.dred{background:#991b1b}.dgreen{background:#166534}.dorange{background:#92400e}.dgray{background:#374151}.pick{outline:3px solid #60a5fa}.traincard{display:inline-block;width:auto;max-width:max-content;padding:12px 14px;margin-top:14px}.traincard .row{display:inline-flex;gap:18px;align-items:center}.traincard .title{font-size:16px;white-space:nowrap}.traincard .muted{font-size:13px;white-space:nowrap}.plan-actions{margin:8px 0 14px}.plan-actions .btn{font-size:14px;padding:11px 6px;border-radius:12px;min-height:46px}.trainer-time-card{background:#111827;border:1px solid #374151;border-radius:14px;padding:12px;margin:9px 0}.trainer-time-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.trainer-time-grid input{padding:11px;font-size:15px}.trainer-time-grid .lab{margin:8px 0 5px;font-size:12px}
+</style>
+</head>
+<body><div id="app" class="app"></div><script>
+const K='verein_abrechnung_clean_v2';
+const SHEET_URL='https://script.google.com/macros/s/AKfycbwKzQ6zinPIMu-OlTe_ncQDJPQFoPlAMLRzOBBhV7qq-Qnk8L4H6dBBw34J1lyI6zvjTQ/exec';
+const base={trainers:[{id:'t1',name:'Violetta',type:'Haupttrainer'},{id:'t2',name:'Trainerin 2',type:'Nachwuchstrainer'}],groups:[{id:'m1',name:'Movietraining IV1',duration:1.5,budget:40,mainFee:20,assistantFee:10},{id:'m2',name:'Movietraining IV2',duration:1.5,budget:40,mainFee:20,assistantFee:10},{id:'p1',name:'Pferdetraining IV1',duration:2,budget:60,mainFee:30,assistantFee:15},{id:'p2',name:'Pferdetraining IV2',duration:3,budget:90,mainFee:45,assistantFee:22.5}],schedules:[{id:'s1',groupId:'m1',w:2,start:'19:00',end:'20:30'},{id:'s2',groupId:'m2',w:4,start:'18:00',end:'19:30'},{id:'s3',groupId:'p1',w:3,start:'16:00',end:'18:00'},{id:'s4',groupId:'p2',w:5,start:'15:30',end:'18:30'},{id:'s5',groupId:'m1',w:0,start:'18:00',end:'19:30'}],plan:{},one:[],trainings:[],paidQ:{}};
+let data = JSON.parse(JSON.stringify(base));
+let view = 'home';
+let cur = null;
+let mon = ym(new Date());
+let sel = todayStr();
+let tab = 'trainer';
+let openT = null;
+let openG = null;
+let openSum = null;
+let moveKey = null;
+let flash = '';
+let centralSignature='';
+function load(){try{let saved=JSON.parse(localStorage.getItem(K))||{};let d=Object.assign(JSON.parse(JSON.stringify(base)),saved);d.plan=d.plan||{};d.one=d.one||[];d.trainings=d.trainings||[];d.paidQ=d.paidQ||{};d.schedules=(d.schedules||[]).map(s=>{
+  let vf=s.validFrom;
+
+  if(!vf || vf==='1900-01-01'){
+    vf=s.createdAt || '2026-04-01';
+  }
+
+  return Object.assign({},s,{seriesId:s.seriesId||s.id,validFrom:vf});
+});return d}catch(e){let d=JSON.parse(JSON.stringify(base));d.schedules=d.schedules.map(s=>Object.assign({seriesId:s.id,validFrom:'2026-04-01'},s));return d}}
+let saveTimer=null;
+function save(){
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(async()=>{
+    const ok=await pushAppDataToSheet();
+    if(ok){
+      setTimeout(()=>{
+        syncFromSheet().then(render);
+      },1200);
+    }
+  },300);
+}
+function appDataSignature(value){
+  try{
+    return JSON.stringify(value||{});
+  }catch(e){
+    return '';
+  }
+}
+
+function fetchCentralAppData(){
+  return new Promise((resolve)=>{
+    const cb='sheetCheck_'+Date.now()+Math.random().toString(36).slice(2);
+    let finished=false;
+
+    window[cb]=res=>{
+      finished=true;
+      delete window[cb];
+      resolve(res&&res.appData?res.appData:null);
+    };
+
+    const script=document.createElement('script');
+    script.src=SHEET_URL+'?callback='+cb+'&check='+(Date.now());
+    script.onerror=()=>{
+      if(!finished){
+        delete window[cb];
+        resolve(null);
+      }
+    };
+
+    document.body.appendChild(script);
+
+    setTimeout(()=>{
+      if(!finished){
+        delete window[cb];
+        resolve(null);
+      }
+    },5000);
+  });
+}
+
+async function pushAppDataToSheet(){
+  try{
+    const central=await fetchCentralAppData();
+
+    if(
+      central &&
+      centralSignature &&
+      appDataSignature(central)!==centralSignature
+    ){
+      alert(
+        'Die Daten wurden inzwischen auf einem anderen Gerät geändert. '+
+        'Die App lädt jetzt den aktuellen Stand. Bitte führe deine letzte Änderung danach erneut aus.'
+      );
+
+      await syncFromSheet();
+      return false;
+    }
+
+    await fetch(SHEET_URL,{
+      method:'POST',
+      mode:'no-cors',
+      cache:'no-store',
+      headers:{
+        'Content-Type':'text/plain;charset=utf-8'
+      },
+      body:JSON.stringify({
+        action:'saveAppData',
+        appData:data
+      })
+    });
+
+    centralSignature=appDataSignature(data);
+    return true;
+
+  }catch(e){
+    console.log('AppData Sync Fehler',e);
+    alert('Die Daten konnten nicht an Google Sheets übertragen werden.');
+    return false;
+  }
+}function A(){return document.getElementById('app')}function H(t,b=1){A().innerHTML='<header>'+(b?'<button class="back" onclick="go(\'home\')">‹</button>':'')+'<h1>'+t+'</h1></header>'}function go(v){view=v;render()}function id(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}function eur(n){return Number(n||0).toLocaleString('de-DE',{style:'currency',currency:'EUR'})}function g(id){return data.groups.find(x=>x.id==id)||data.groups[0]}function isArchivedGroup(gr){return !!gr.archived}function isGroupVisibleOnDate(groupId,date){let gr=g(groupId);return !(gr&&gr.archivedFrom&&date>=gr.archivedFrom)}function isScheduleVisibleOnDate(s,date){return !(s&&s.archivedFrom&&date>=s.archivedFrom)}function tr(id){return data.trainers.find(x=>x.id==id)}function btn(t,c,f){let b=document.createElement('button');b.className='btn '+c;b.textContent=t;b.onclick=f;return b}function div(c,h=''){let d=document.createElement('div');d.className=c;d.innerHTML=h;return d}function lab(t){A().appendChild(div('lab',t))}function q(date){return Math.floor((+date.slice(5,7)-1)/3)+1}function yr(date){return +date.slice(0,4)}function fmt(date){let d=new Date(date+'T12:00');return d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'2-digit',weekday:'long'})}function wdName(n){return ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'][+n]}
+function ym(date){return date.getFullYear()+'-'+String(date.getMonth()+1).padStart(2,'0')}
+function dateStr(y,m,d){return y+'-'+String(m).padStart(2,'0')+'-'+String(d).padStart(2,'0')}
+function todayStr(){let d=new Date();return dateStr(d.getFullYear(),d.getMonth()+1,d.getDate())}
+function firstDayOfMonth(ymValue){return ymValue+'-01'}
+function mins(t){let p=(t||'00:00').split(':');return (+p[0])*60+(+p[1])}function durMin(a,b){return Math.max(0,mins(b)-mins(a))}function clampTime(v,min,max){if(mins(v)<mins(min))return min;if(mins(v)>mins(max))return max;return v}function clampTrainer(id){if(!cur.trainerTimes||!cur.trainerTimes[id])return;cur.trainerTimes[id].start=clampTime(cur.trainerTimes[id].start,cur.start,cur.end);cur.trainerTimes[id].end=clampTime(cur.trainerTimes[id].end,cur.start,cur.end);if(mins(cur.trainerTimes[id].end)<mins(cur.trainerTimes[id].start))cur.trainerTimes[id].end=cur.trainerTimes[id].start}
+function home(){H('Vereins-Abrechnung',0);
+A().appendChild(div('card muted','Zentral synchronisiert · Änderungen anderer Geräte werden vor dem Speichern geprüft.'));let grid=div('grid');[['planning','Monatsübersicht','geplante Trainings'],['settings','Einstellungen','Trainer & Trainings'],['summary','Auswertung','Quartale & Bezahlung'],['list','Datenliste',activeTrainings().length+' Abrechnungen']].forEach(x=>{let b=div('tile',x[1]+'<span class="sub">'+x[2]+'</span>');b.onclick=()=>go(x[0]);grid.appendChild(b)});A().appendChild(grid)}
+function newCur(){return{date:todayStr(),groupId:data.groups[0].id,start:'18:00',end:'19:30',sel:[],trainerTimes:{},confirmed:false,planKey:null,rule:null}}
+function calc(c){let gr=g(c.groupId),rule=c.rule||{},duration=+(rule.duration??gr.duration),mainFee=+(rule.mainFee??gr.mainFee),assistantFee=+(rule.assistantFee??gr.assistantFee),baseBudget=+(rule.budget??gr.budget),plannedMin=(rule.start&&rule.end)?durMin(rule.start,rule.end):0,baseMin=plannedMin||duration*60,curMin=durMin(c.start,c.end),factor=Math.max(.1,curMin/baseMin),budget=baseBudget*factor,rows=(c.sel||[]).map(tr).filter(Boolean).map(t=>{let tt=(c.trainerTimes&&c.trainerTimes[t.id])||{start:c.start,end:c.end},tf=durMin(tt.start,tt.end)/baseMin,base=(t.type=='Haupttrainer'?mainFee:assistantFee)*tf;return{id:t.id,name:t.name,role:t.type,start:tt.start,end:tt.end,base,rest:0,total:0}});let sum=rows.reduce((s,r)=>s+r.base,0),rest=Math.max(0,budget-sum),timeSum=rows.reduce((s,r)=>s+durMin(r.start,r.end),0);rows.forEach(r=>{r.rest=timeSum?rest*(durMin(r.start,r.end)/timeSum):0;r.total=r.base+r.rest});return{gr,rows,sum,rest,total:rows.reduce((s,r)=>s+r.total,0),budget}}
+function form(){if(!cur)cur=newCur();H('Trainer auswählen');if(!cur.planKey){lab('Training');let gr=div('grid');data.groups.forEach(x=>{let b=div('tile '+(cur.groupId==x.id?'sel':''),x.name+'<span class="sub">'+eur(x.budget)+'</span>');b.onclick=()=>{cur.groupId=x.id;render()};gr.appendChild(b)});A().appendChild(gr)}else{let gg=g(cur.groupId);A().appendChild(div('card traincard','<div class="row"><div><div class="title">'+gg.name+' · <span>'+fmt(cur.date)+'</span></div><div class="muted">'+cur.start+'–'+cur.end+'</div></div></div><div class="muted" style="margin-top:8px">Uhrzeit kann angepasst werden. Das Kontingent wird automatisch anteilig angepasst.</div>'))}let ti=div('grid g2','<div><label class="lab">Beginn</label><input id="st" type="time" value="'+cur.start+'"></div><div><label class="lab">Ende</label><input id="en" type="time" value="'+cur.end+'"></div>');A().appendChild(ti);st.onchange=e=>{cur.start=e.target.value;(cur.sel||[]).forEach(clampTrainer);render()};en.onchange=e=>{cur.end=e.target.value;(cur.sel||[]).forEach(clampTrainer);render()};lab('Trainer');let tg=div('grid g2');data.trainers.forEach(t=>{let b=div('tile '+(cur.sel.includes(t.id)?'sel':''),t.name);b.onclick=()=>{cur.confirmed=false;if(cur.sel.includes(t.id)){cur.sel=cur.sel.filter(x=>x!=t.id);delete cur.trainerTimes[t.id]}else{cur.sel.push(t.id);cur.trainerTimes[t.id]={start:cur.start,end:cur.end}}render()};tg.appendChild(b)});A().appendChild(tg);if(cur.sel.length){A().appendChild(div('sec','Anwesenheitszeiten'));cur.sel.map(tr).filter(Boolean).forEach(t=>{cur.trainerTimes[t.id]=cur.trainerTimes[t.id]||{start:cur.start,end:cur.end};let tt=cur.trainerTimes[t.id];let card=div('trainer-time-card','<div class="title">'+t.name+'</div><div class="muted">'+t.type+'</div><div class="trainer-time-grid"><div><label class="lab">Beginn</label><input id="ts_'+t.id+'" type="time" min="'+cur.start+'" max="'+cur.end+'" value="'+tt.start+'"></div><div><label class="lab">Ende</label><input id="te_'+t.id+'" type="time" min="'+cur.start+'" max="'+cur.end+'" value="'+tt.end+'"></div></div>');A().appendChild(card);document.getElementById('ts_'+t.id).onchange=e=>{cur.confirmed=false;cur.trainerTimes[t.id].start=clampTime(e.target.value,cur.start,cur.end);if(mins(cur.trainerTimes[t.id].end)<mins(cur.trainerTimes[t.id].start))cur.trainerTimes[t.id].end=cur.trainerTimes[t.id].start;render()};document.getElementById('te_'+t.id).onchange=e=>{cur.confirmed=false;cur.trainerTimes[t.id].end=clampTime(e.target.value,cur.start,cur.end);if(mins(cur.trainerTimes[t.id].end)<mins(cur.trainerTimes[t.id].start))cur.trainerTimes[t.id].start=cur.trainerTimes[t.id].end;render()}});let cbtn=btn('Trainerauswahl bestätigen','ok',()=>{cur.confirmed=true;render()});cbtn.style.width='auto';cbtn.style.padding='14px 22px';A().appendChild(cbtn)}let c=calc(cur);A().appendChild(div('card','<div class="title">Berechnung</div><div class="inv"><div><span>Kontingent</span><b>'+eur(c.budget)+'</b></div><div><span>Auszahlung</span><b>'+eur(c.total)+'</b></div><div><span>Rest</span><b>'+eur(c.rest)+'</b></div></div>'));c.rows.forEach(r=>A().appendChild(div('card','<div class="row"><div><div class="title">'+r.name+'</div><div class="muted">'+r.role+' · '+r.start+'–'+r.end+' · Grund '+eur(r.base)+' · Rest '+eur(r.rest)+'</div></div><b class="money">'+eur(r.total)+'</b></div>')));if(cur.confirmed)fab([['Speichern','ok grow',saveTraining]])}
+async function deleteTrainingFromSheet(training){
+  if(!training)return false;
+  return await pushAppDataToSheet();
+}
+
+async function saveTraining(){
+  let c=calc(cur),it={id:id(),planKey:cur.planKey||'',date:cur.date,groupId:cur.groupId,groupName:c.gr.name,start:cur.start,end:cur.end,budget:c.budget,payout:c.total,trainers:c.rows};
+
+  if(cur.planKey && data.plan[cur.planKey] && data.plan[cur.planKey].trainingId){
+    let oldId=data.plan[cur.planKey].trainingId;
+    data.trainings=data.trainings.filter(t=>t.id!=oldId);
+  }
+
+  data.trainings.push(it);
+
+  if(cur.planKey){
+    data.plan[cur.planKey]={status:'filled',trainingId:it.id};
+  }
+
+  clearTimeout(saveTimer);
+  await pushAppDataToSheet();
+  await new Promise(resolve=>setTimeout(resolve,1200));
+  await syncFromSheet();
+  go(cur.planKey?'planning':'list');
+}
+function normalizeSchedule(s){
+  if(!s.seriesId)s.seriesId=s.id;
+  if(!s.validFrom || s.validFrom==='1900-01-01' || s.validFrom==='2026-01-01')s.validFrom='2026-04-01';
+  let gr=g(s.groupId);
+  if(gr){
+    if(s.duration===undefined || s.duration===null || s.duration==='')s.duration=gr.duration;
+    if(s.budget===undefined || s.budget===null || s.budget==='')s.budget=gr.budget;
+    if(s.mainFee===undefined || s.mainFee===null || s.mainFee==='')s.mainFee=gr.mainFee;
+    if(s.assistantFee===undefined || s.assistantFee===null || s.assistantFee==='')s.assistantFee=gr.assistantFee;
+  }
+  return s;
+}
+function activeSchedulesForDate(date){
+  let bySeries={};
+  data.schedules.map(normalizeSchedule).filter(s=>(s.validFrom||'2026-04-01')<=date&&isGroupVisibleOnDate(s.groupId,date)&&isScheduleVisibleOnDate(s,date)).forEach(s=>{
+    let sid=s.seriesId||s.id;
+    if(!bySeries[sid]||(s.validFrom||'2026-04-01')>(bySeries[sid].validFrom||'1900-01-01'))bySeries[sid]=s;
+  });
+  return Object.values(bySeries);
+}
+function plans(){
+  let [Y,M]=mon.split('-').map(Number),days=new Date(Y,M,0).getDate(),out=[];
+  for(let d=1;d<=days;d++){
+    let dt=new Date(Y,M-1,d),date=dateStr(Y,M,d);
+    activeSchedulesForDate(date).forEach(s=>{
+      if(dt.getDay()==s.w){
+        let gr=g(s.groupId);
+        if(!gr)return;
+        let key=(s.seriesId||s.id)+'_'+date,st=data.plan[key]||{status:'open'};
+        out.push({...s,key,date,groupName:gr.name,status:st.status,movedTo:st.movedTo,trainingId:st.trainingId,target:0,budget:s.budget??gr.budget,duration:s.duration??gr.duration,mainFee:s.mainFee??gr.mainFee,assistantFee:s.assistantFee??gr.assistantFee});
+        if(st.status=='moved'&&st.movedTo&&st.movedTo.slice(0,7)==mon){
+          out.push({...s,key,date:st.movedTo,groupName:gr.name,status:'open',orig:date,target:1,budget:s.budget??gr.budget,duration:s.duration??gr.duration,mainFee:s.mainFee??gr.mainFee,assistantFee:s.assistantFee??gr.assistantFee});
+        }
+      }
+    });
+  }
+  data.one.forEach(o=>{
+    let key='one_'+o.id,st=data.plan[key]||{status:'open'};
+    let sameRegular=out.some(p=>p.date==o.date&&cleanText(p.groupName)==cleanText(o.groupName));
+    if(o.fromSheet&&sameRegular){
+      let regular=out.find(p=>p.date==o.date&&cleanText(p.groupName)==cleanText(o.groupName));
+      if(regular&&st.trainingId){
+        data.plan[regular.key]={status:'filled',trainingId:st.trainingId};
+      }
+      return;
+    }
+    if(o.date.slice(0,7)==mon)out.push({...o,key,status:st.status,movedTo:st.movedTo,trainingId:st.trainingId,target:0});
+    if(st.status=='moved'&&st.movedTo&&st.movedTo.slice(0,7)==mon)out.push({...o,key,date:st.movedTo,status:'open',orig:o.date,target:1});
+  });
+  return out.sort((a,b)=>(a.date+a.start).localeCompare(b.date+b.start));
+}
+function findTrainingForPlan(p){
+  const st=data.plan[p.key]||{};
+
+  if(st.trainingId){
+    const byId=data.trainings.find(
+      t=>String(t.id)===String(st.trainingId)
+    );
+    if(byId)return byId;
+  }
+
+  const byPlanKey=data.trainings.find(
+    t=>String(t.planKey||'')===String(p.key)
+  );
+
+  return byPlanKey||null;
+}
+
+function done(p){
+  const st=data.plan[p.key]||{};
+
+  if(st.status==='cancelled'){
+    return true;
+  }
+
+  const training=findTrainingForPlan(p);
+
+  return !!(
+    training &&
+    Array.isArray(training.trainers) &&
+    training.trainers.length
+  );
+}
+function planning(){H('Monatsübersicht');A().appendChild(div('month','<button class="mini" id="prev">‹</button><b>'+new Date(mon+'-01T12:00').toLocaleDateString('de-DE',{month:'long',year:'numeric'})+'</b><button class="mini" id="next">›</button>'));prev.onclick=()=>{mon=shift(mon,-1);sel=firstDayOfMonth(mon);render()};next.onclick=()=>{mon=shift(mon,1);sel=firstDayOfMonth(mon);render()};let syncBtn=btn('Aus Google Sheet aktualisieren','secbtn',()=>{syncFromSheet().then(render)});syncBtn.style.fontSize='14px';syncBtn.style.padding='10px';A().appendChild(syncBtn);A().appendChild(div('sec','Monat'));let calWrap=div('cal-wrap');A().appendChild(calWrap);calendar(calWrap);let selWrap=div('selected-wrap');A().appendChild(selWrap);selWrap.appendChild(div('selected-title','Trainings am '+new Date(sel+'T12:00').toLocaleDateString('de-DE',{weekday:'long',day:'2-digit',month:'2-digit'})));let day=plans().filter(p=>p.date==sel);if(!day.length)selWrap.appendChild(div('card muted','Kein Training geplant.'));day.forEach(p=>planCard(p,selWrap));oneForm()}
+function shift(ymValue,n){let p=ymValue.split('-').map(Number);return ym(new Date(p[0],p[1]-1+n,1))}
+function calendar(target){target.appendChild(div('calh','<div>Mo</div><div>Di</div><div>Mi</div><div>Do</div><div>Fr</div><div>Sa</div><div>So</div>'));let grid=div('cal'),[Y,M]=mon.split('-').map(Number),first=new Date(Y,M-1,1),days=new Date(Y,M,0).getDate(),off=first.getDay()==0?6:first.getDay()-1,monthPlans=plans();for(let i=0;i<off;i++)grid.appendChild(div('day empty'));for(let d=1;d<=days;d++){let date=Y+'-'+String(M).padStart(2,'0')+'-'+String(d).padStart(2,'0'),ps=monthPlans.filter(p=>p.date==date),cls='day';if(ps.length){let cancelled=ps.filter(p=>p.status=='cancelled').length,moved=ps.filter(p=>p.status=='moved'&&!p.target).length,needsTrainer=ps.filter(p=>p.status!='cancelled'&&!(p.status=='moved'&&!p.target)),dn=needsTrainer.filter(done).length;if(cancelled==ps.length||moved==ps.length){cls+=' dgray'}else if(needsTrainer.length&&dn==needsTrainer.length){cls+=' dgreen'}else if(dn==0){cls+=' dred'}else{cls+=' dorange'}}if(date==sel)cls+=' pick';let b=div(cls,'<span>'+d+'</span>'+ (ps.length?'<small>'+ps.length+' Training</small>':''));b.onclick=()=>{sel=date;render()};grid.appendChild(b)}target.appendChild(grid)}
+function planCard(p,target){
+  let link=findTrainingForPlan(p);
+  let hasTrainer=!!(link&&link.trainers&&link.trainers.length);
+  let status=hasTrainer?'filled':p.status;
+  let badge=status=='filled'?'green':status=='cancelled'?'dgray':status=='moved'?'blue':p.target?'orange':'blue';
+  let trainerNames=hasTrainer?link.trainers.map(r=>r.name).join(', '):'';
+  let txt=status=='filled'?(trainerNames||'Trainer eingetragen'):status=='cancelled'?'ausgefallen':status=='moved'?'verschoben':p.target?'verschoben hierhin':'offen';
+
+  target.appendChild(div(
+    'card traincard '+(status=='moved'?'status-moved':p.target?'status-moved-target':''),
+    '<div class="row"><div><div class="title">'+p.groupName+'</div><div class="muted">'+p.start+'–'+p.end+'</div></div><span class="badge '+badge+'">'+txt+'</span></div>'+
+    (p.orig?'<div class="muted">Ursprünglich: '+p.orig+'</div>':'')+
+    (p.movedTo?'<div class="muted">Verschoben auf: '+p.movedTo+'</div>':'')
+  ));
+
+  let ac=div('grid plan-actions');
+  ac.style.gridTemplateColumns=hasTrainer?'1fr 1fr':'1fr 1fr';
+
+  ac.appendChild(btn(hasTrainer?'Trainer ändern':'Trainer auswählen','pri',()=>{
+    cur=newCur();
+    cur.date=p.date;
+    cur.groupId=p.groupId;
+    cur.start=p.start;
+    cur.end=p.end;
+    cur.planKey=p.key;
+    cur.rule={duration:p.duration??g(p.groupId).duration,budget:p.budget??g(p.groupId).budget,mainFee:p.mainFee??g(p.groupId).mainFee,assistantFee:p.assistantFee??g(p.groupId).assistantFee,start:p.start,end:p.end};
+    go('new');
+  }));
+
+  ac.appendChild(btn(status=='cancelled'?'Wieder offen':'Ausgefallen',status=='cancelled'?'secbtn':'bad',()=>{
+    data.plan[p.key]=status=='cancelled'?{status:'open'}:{status:'cancelled'};
+    save();
+    render();
+  }));
+
+  if(hasTrainer){
+    ac.appendChild(btn('Trainer entfernen','secbtn',async()=>{
+      if(confirm('Eingetragene Trainer wirklich entfernen?')){
+        let idx=data.trainings.findIndex(t=>link&&t.id==link.id);
+        if(idx>-1)data.trainings.splice(idx,1);
+        data.plan[p.key]={status:'open'};
+        clearTimeout(saveTimer);
+        await pushAppDataToSheet();
+        await new Promise(resolve=>setTimeout(resolve,1200));
+        await syncFromSheet();
+        render();
+      }
+    }));
+  }
+
+  ac.appendChild(btn(moveKey==p.key?'Abbrechen':'Verschoben',moveKey==p.key?'secbtn':'warn',()=>{
+    moveKey=moveKey==p.key?null:p.key;
+    render();
+  }));
+
+  target.appendChild(ac);
+
+  if(moveKey==p.key){
+    target.appendChild(div('card','<label class="lab">Neues Datum</label><input id="mv" type="date" value="'+(p.movedTo||p.date)+'">'));
+    target.appendChild(btn('Verschiebung speichern','ok',()=>{
+      data.plan[p.key]={status:'moved',movedTo:mv.value};
+      moveKey=null;
+      save();
+      render();
+    }));
+  }
+}
+function oneForm(){
+  let card=div('card one-card',
+    '<div class="sec" style="margin-top:0">Einmaliges Training hinzufügen</div>'+
+    '<label class="lab">Datum</label><input id="od" type="date" value="'+sel+'">'+
+    '<label class="lab">Wochentag</label><select id="owd">'+weekdayOptions(new Date(sel+'T12:00').getDay())+'</select><div class="muted">Nur für dieses einmalige Training.</div>'+ 
+    '<label class="lab">Art</label><select id="otype"><option value="existing">Angelegtes Training nutzen</option><option value="custom">Neues einmaliges Training</option></select>'+
+    '<div id="existingOneFields"><label class="lab">Training</label><select id="og">'+data.groups.filter(x=>!x.archived).map(x=>'<option value="'+x.id+'">'+x.name+'</option>').join('')+'</select></div>'+
+    '<div id="customOneFields" style="display:none"><label class="lab">Name</label><input id="ocname" placeholder="z. B. Sondertraining"><div class="grid g2"><div><label class="lab">Dauer</label><input id="ocdur" type="number" step=".25" value="1.5"></div><div><label class="lab">Kontingent €</label><input id="ocbudget" type="number" step=".01" value="40"></div></div><div class="grid g2"><div><label class="lab">Haupttrainer €</label><input id="ocmain" type="number" step=".01" value="20"></div><div><label class="lab">Nachwuchstrainer €</label><input id="ocassist" type="number" step=".01" value="10"></div></div></div>'+
+    '<div class="grid g2"><div><label class="lab">Beginn</label><input id="os" type="time" value="18:00"></div><div><label class="lab">Ende</label><input id="oe" type="time" value="19:30"></div></div>'
+  );
+  let smallBtn=btn('Training zum Kalender hinzufügen','ok',()=>{
+    if(otype.value==='custom'){
+      let name=ocname.value.trim();
+      if(!name){alert('Bitte Namen für das einmalige Training eingeben.');return;}
+      let gid='onegroup_'+id();
+      data.groups.push({id:gid,name:name,duration:+ocdur.value,budget:+ocbudget.value,mainFee:+ocmain.value,assistantFee:+ocassist.value,oneOnly:true,archived:true,archivedFrom:od.value});
+      data.one.push({id:id(),date:od.value,weekday:+owd.value,groupId:gid,groupName:name,start:os.value,end:oe.value});
+    }else{
+      let gr=g(og.value);
+      data.one.push({id:id(),date:od.value,weekday:+owd.value,groupId:og.value,groupName:gr.name,start:os.value,end:oe.value});
+    }
+    mon=od.value.slice(0,7);
+    sel=od.value;
+    save();
+    render();
+  });
+  smallBtn.style.width='auto';
+  smallBtn.style.padding='14px 22px';
+  card.appendChild(smallBtn);
+  A().appendChild(card);
+  document.getElementById('od').onchange=()=>{
+    let d=new Date(od.value+'T12:00');
+    if(!isNaN(d))owd.value=d.getDay();
+  };
+  document.getElementById('otype').onchange=()=>{
+    document.getElementById('existingOneFields').style.display=otype.value==='existing'?'block':'none';
+    document.getElementById('customOneFields').style.display=otype.value==='custom'?'block':'none';
+  };
+}
+function settings(){H('Einstellungen');if(flash){A().appendChild(div('card green','<b>'+flash+'</b>'));flash=''}let tabs=div('grid g2');['trainer','trainings'].forEach(t=>{let b=div('tile tabtile '+(tab==t?'sel':''),t=='trainer'?'Trainer<span class="sub">Trainer verwalten</span>':'Trainings<span class="sub">Trainings verwalten</span>');b.onclick=()=>{tab=t;render()};tabs.appendChild(b)});A().appendChild(tabs);tab=='trainer'?trainerSettings():trainingSettings()}
+function trainerSettings(){
+A().appendChild(div('sec','1. Angelegte Trainer'));
+
+data.trainers.forEach(t=>{
+  if(openT!=t.id){
+    let x=div('item','<div class="row"><div class="title">'+t.name+'</div><span>›</span></div>');
+    x.onclick=()=>{openT=t.id;render()};
+    A().appendChild(x);
+  }else{
+    let c=div('card','<label class="lab">Name</label><input id="etn_'+t.id+'" value="'+t.name+'"><div class="grid g2"><button id="eth_'+t.id+'" class="tile '+(t.type=='Haupttrainer'?'sel':'')+'">Haupttrainer</button><button id="etn2_'+t.id+'" class="tile '+(t.type=='Nachwuchstrainer'?'sel':'')+'">Nachwuchstrainer</button></div>');
+    A().appendChild(c);
+    document.getElementById('eth_'+t.id).onclick=()=>{t.type='Haupttrainer';save();render()};
+    document.getElementById('etn2_'+t.id).onclick=()=>{t.type='Nachwuchstrainer';save();render()};
+    document.getElementById('etn_'+t.id).onchange=()=>{t.name=document.getElementById('etn_'+t.id).value;save();render()};
+    let r=div('grid g2');
+    r.appendChild(btn('Trainer löschen','bad',()=>{if(confirm('Trainer wirklich löschen?')){data.trainers=data.trainers.filter(x=>x.id!=t.id);openT=null;save();render()}}));
+    r.appendChild(btn('Schließen','secbtn',()=>{openT=null;render()}));
+    A().appendChild(r);
+  }
+});
+
+A().appendChild(div('sec','2. Weiteren Trainer anlegen'));
+let card=div('card','<label class="lab">Name</label><input id="newTrainerName"><div class="grid g2"><button id="newTrainerMain" class="tile sel">Haupttrainer</button><button id="newTrainerJunior" class="tile">Nachwuchstrainer</button></div>');
+A().appendChild(card);
+let newTrainerType='Haupttrainer';
+document.getElementById('newTrainerMain').onclick=()=>{newTrainerType='Haupttrainer';document.getElementById('newTrainerMain').classList.add('sel');document.getElementById('newTrainerJunior').classList.remove('sel')};
+document.getElementById('newTrainerJunior').onclick=()=>{newTrainerType='Nachwuchstrainer';document.getElementById('newTrainerJunior').classList.add('sel');document.getElementById('newTrainerMain').classList.remove('sel')};
+A().appendChild(btn('Trainer hinzufügen','ok',()=>{
+  let input=document.getElementById('newTrainerName');
+  let name=input.value.trim();
+
+  if(!name){
+    alert('Bitte einen Namen eingeben.');
+    input.focus();
+    return;
+  }
+
+  let exists=data.trainers.some(t=>t.name.toLowerCase()==name.toLowerCase());
+
+  if(exists){
+    alert('Dieser Trainer existiert bereits.');
+    return;
+  }
+
+  let newId=id();
+
+  data.trainers.unshift({
+    id:newId,
+    name:name,
+    type:newTrainerType
+  });
+
+  save();
+
+  openT=null;
+  flash='Trainer gespeichert: '+name;
+
+  render();
+
+  setTimeout(()=>{
+    window.scrollTo({top:0,behavior:'smooth'});
+  },50);
+}));
+}
+function latestSchedules(){
+  let bySeries={};
+  data.schedules.map(normalizeSchedule).forEach(s=>{
+    let sid=s.seriesId||s.id;
+    if(!bySeries[sid]||(s.validFrom||'2026-04-01')>(bySeries[sid].validFrom||'1900-01-01'))bySeries[sid]=s;
+  });
+  return Object.values(bySeries).sort((a,b)=>{
+    let ga=g(a.groupId).name.localeCompare(g(b.groupId).name);
+    if(ga!==0)return ga;
+    return (a.w-b.w)||a.start.localeCompare(b.start);
+  });
+}
+
+function trainingSettings(){
+  A().appendChild(div('sec','1. Aktuelle Trainings'));
+  let current=latestSchedules().filter(s=>!s.archivedFrom);
+  if(!current.length)A().appendChild(div('card muted','Noch keine aktuellen Trainings angelegt.'));
+  current.forEach(s=>{
+    let gr=g(s.groupId);
+    let key=s.seriesId||s.id;
+    if(openG!==key){
+      let x=div('item','<div class="row"><div><div class="title">'+gr.name+'</div><div class="muted">'+wdName(s.w)+' · '+s.start+'–'+s.end+' · '+eur(s.budget??gr.budget)+' Kontingent</div></div><span>›</span></div>');
+      x.onclick=()=>{openG=key;render()};
+      A().appendChild(x);
+    }else{
+      trainingScheduleDetails(s);
+    }
+  });
+
+  A().appendChild(div('sec','2. Weiteres Training anlegen'));
+  addGroupForm();
+
+  let archived=latestSchedules().filter(s=>s.archivedFrom);
+  A().appendChild(div('sec','3. Archivierte Trainings'));
+  if(!archived.length)A().appendChild(div('card muted','Noch keine Trainings archiviert.'));
+  archived.forEach(s=>{
+    let gr=g(s.groupId);
+    let key=s.seriesId||s.id;
+    if(openG!==key){
+      let x=div('item','<div class="row"><div><div class="title">'+gr.name+'</div><div class="muted">'+wdName(s.w)+' · '+s.start+'–'+s.end+' · archiviert ab '+s.archivedFrom+'</div></div><span class="badge orange">Archiv</span></div>');
+      x.onclick=()=>{openG=key;render()};
+      A().appendChild(x);
+    }else{
+      archivedScheduleDetails(s);
+    }
+  });
+}
+
+function weekdayOptions(selected){
+  return [0,1,2,3,4,5,6].map(d=>'<option value="'+d+'" '+(d==selected?'selected':'')+'>'+wdName(d)+'</option>').join('');
+}
+
+function currentScheduleForGroup(groupId){
+  let rules=data.schedules.filter(x=>x.groupId==groupId).map(normalizeSchedule);
+  if(!rules.length){
+    let today=todayStr();
+    return {id:id(),seriesId:id(),groupId:groupId,w:1,start:'18:00',end:'19:30',validFrom:today};
+  }
+  rules.sort((a,b)=>(b.validFrom||'1900-01-01').localeCompare(a.validFrom||'1900-01-01'));
+  return rules[0];
+}
+
+function archivedScheduleDetails(s){
+  let gr=g(s.groupId);
+  let c=div('card','<div class="title">'+gr.name+'</div><div class="muted">'+wdName(s.w)+' · '+s.start+'–'+s.end+'</div><div class="muted">Archiviert ab '+s.archivedFrom+'. Alte Monate bleiben in der Monatsübersicht erhalten.</div>');
+  let actions=div('grid g2');
+  actions.appendChild(btn('Wieder aktivieren','ok',()=>{
+    data.schedules.filter(x=>(x.seriesId||x.id)===(s.seriesId||s.id)).forEach(x=>delete x.archivedFrom);
+    openG=null;save();render();
+  }));
+  actions.appendChild(btn('Schließen','secbtn',()=>{openG=null;render()}));
+  c.appendChild(actions);A().appendChild(c);
+}
+
+function trainingScheduleDetails(s){
+  let gr=g(s.groupId), key=s.seriesId||s.id;
+  let c=div('card',
+    '<label class="lab">Name</label><input id="gn_'+key+'" value="'+gr.name+'">'+
+    '<div class="grid g2"><div><label class="lab">Dauer</label><input id="gd_'+key+'" type="number" step=".25" value="'+(s.duration??gr.duration)+'"></div><div><label class="lab">Wochentag</label><select id="gw_'+key+'">'+weekdayOptions(s.w)+'</select></div></div>'+
+    '<div class="grid g2"><div><label class="lab">Beginn</label><input id="gs_'+key+'" type="time" value="'+s.start+'"></div><div><label class="lab">Ende</label><input id="ge_'+key+'" type="time" value="'+s.end+'"></div></div>'+
+    '<label class="lab">Gültig ab</label><input id="gv_'+key+'" type="date" value="'+(s.validFrom||todayStr())+'"><div class="muted">Diese Terminregel steuert direkt die Monatsübersicht.</div>'+
+    '<div class="grid g2"><div><label class="lab">Haupttrainer €</label><input id="gm_'+key+'" type="number" step=".01" value="'+(s.mainFee??gr.mainFee)+'"></div><div><label class="lab">Nachwuchstrainer €</label><input id="ga_'+key+'" type="number" step=".01" value="'+(s.assistantFee??gr.assistantFee)+'"></div></div>'+
+    '<label class="lab">Kontingent €</label><input id="gb_'+key+'" type="number" step=".01" value="'+(s.budget??gr.budget)+'">'
+  );
+  let actions=div('grid g2');
+  actions.appendChild(btn('Änderungen speichern','ok',()=>{
+    gr.name=document.getElementById('gn_'+key).value;
+    gr.duration=+document.getElementById('gd_'+key).value;
+    gr.budget=+document.getElementById('gb_'+key).value;
+    gr.mainFee=+document.getElementById('gm_'+key).value;
+    gr.assistantFee=+document.getElementById('ga_'+key).value;
+    let validFrom=document.getElementById('gv_'+key).value || (s.validFrom||todayStr());
+    let sameRule=data.schedules.find(x=>(x.seriesId||x.id)===key && (x.validFrom||'1900-01-01')===validFrom);
+    if(sameRule){
+      sameRule.groupId=gr.id;
+      sameRule.w=+document.getElementById('gw_'+key).value;
+      sameRule.start=document.getElementById('gs_'+key).value;
+      sameRule.end=document.getElementById('ge_'+key).value;
+      sameRule.validFrom=validFrom;
+      sameRule.seriesId=key;
+      sameRule.duration=+document.getElementById('gd_'+key).value;
+      sameRule.budget=+document.getElementById('gb_'+key).value;
+      sameRule.mainFee=+document.getElementById('gm_'+key).value;
+      sameRule.assistantFee=+document.getElementById('ga_'+key).value;
+      gr.duration=sameRule.duration;
+      gr.budget=sameRule.budget;
+      gr.mainFee=sameRule.mainFee;
+      gr.assistantFee=sameRule.assistantFee;
+    }else{
+      let newRule={id:id(),seriesId:key,groupId:gr.id,w:+document.getElementById('gw_'+key).value,start:document.getElementById('gs_'+key).value,end:document.getElementById('ge_'+key).value,validFrom:validFrom,duration:+document.getElementById('gd_'+key).value,budget:+document.getElementById('gb_'+key).value,mainFee:+document.getElementById('gm_'+key).value,assistantFee:+document.getElementById('ga_'+key).value};
+      data.schedules.push(newRule);
+      gr.duration=newRule.duration;
+      gr.budget=newRule.budget;
+      gr.mainFee=newRule.mainFee;
+      gr.assistantFee=newRule.assistantFee;
+    }
+    openG=null;save();render();
+  }));
+  actions.appendChild(btn('Archivieren','warn',()=>{
+    let date=prompt('Ab welchem Datum soll dieses Training archiviert werden? (JJJJ-MM-TT)',todayStr());
+    if(date){data.schedules.filter(x=>(x.seriesId||x.id)===key).forEach(x=>x.archivedFrom=date);openG=null;save();render();}
+  }));
+  actions.appendChild(btn('Training löschen','bad',()=>{
+    if(confirm('Dieses Wochen-Training wirklich endgültig löschen? Besser ist meistens Archivieren.')){
+      data.schedules=data.schedules.filter(x=>(x.seriesId||x.id)!==key);
+      openG=null;save();render();
+    }
+  }));
+  c.appendChild(actions);A().appendChild(c);
+}
+
+function addGroupForm(){
+  let c=div('card',
+    '<label class="lab">Name</label><input id="gn">'+
+    '<div class="grid g2"><div><label class="lab">Dauer</label><input id="gd" type="number" step=".25" value="1.5"></div><div><label class="lab">Wochentag</label><select id="gw">'+weekdayOptions(1)+'</select></div></div>'+
+    '<div class="grid g2"><div><label class="lab">Beginn</label><input id="gs" type="time" value="18:00"></div><div><label class="lab">Ende</label><input id="ge" type="time" value="19:30"></div></div>'+
+    '<label class="lab">Findet statt ab</label><input id="gvnew" type="date" value="'+todayStr()+'"><div class="muted">Das Training erscheint erst ab diesem Datum in der Monatsübersicht.</div>'+
+    '<div class="grid g2"><div><label class="lab">Haupttrainer €</label><input id="gm" type="number" step=".01" value="20"></div><div><label class="lab">Nachwuchstrainer €</label><input id="ga" type="number" step=".01" value="10"></div></div>'+
+    '<label class="lab">Kontingent €</label><input id="gb" type="number" step=".01" value="40">'
+  );
+  A().appendChild(c);
+  A().appendChild(btn('Training hinzufügen','ok',()=>{
+    let name=document.getElementById('gn').value.trim();
+    if(!name){alert('Bitte Namen eingeben.');return;}
+    let obj={id:id(),name,duration:+document.getElementById('gd').value,budget:+document.getElementById('gb').value,mainFee:+document.getElementById('gm').value,assistantFee:+document.getElementById('ga').value};
+    data.groups.push(obj);
+    let sid=id();
+    data.schedules.push({id:sid,seriesId:sid,groupId:obj.id,w:+document.getElementById('gw').value,start:document.getElementById('gs').value,end:document.getElementById('ge').value,validFrom:document.getElementById('gvnew').value||todayStr(),duration:obj.duration,budget:obj.budget,mainFee:obj.mainFee,assistantFee:obj.assistantFee});
+    save();render();
+  }));
+}
+
+function activeTrainings(){
+  let activeIds=new Set(Object.values(data.plan||{}).map(p=>p&&p.trainingId).filter(Boolean));
+  return data.trainings.filter(t=>activeIds.has(t.id));
+}
+function paidKey(name,y,qq){return y+'_Q'+qq+'_'+name}function isPaid(name,y,qq){return !!data.paidQ[paidKey(name,y,qq)]}function setPaid(name,y,qq,v){if(v)data.paidQ[paidKey(name,y,qq)]=1;else delete data.paidQ[paidKey(name,y,qq)]}function amount(name,y,qq){let s=0;activeTrainings().forEach(t=>{if(yr(t.date)==y&&q(t.date)==qq)t.trainers.forEach(r=>{if(r.name==name)s+=r.total})});return s}
+function summary(){H('Auswertung');let y=new Date().getFullYear(),tot=0,paid=0;activeTrainings().forEach(t=>{if(yr(t.date)==y)t.trainers.forEach(r=>{tot+=r.total;if(isPaid(r.name,y,q(t.date)))paid+=r.total})});A().appendChild(div('sec','Jahresübersicht '+y));A().appendChild(div('card','<div class="inv"><div><span>Gesamt</span><b>'+eur(tot)+'</b></div><div><span>Bezahlt</span><b>'+eur(paid)+'</b></div><div><span>Offen</span><b>'+eur(tot-paid)+'</b></div></div>'));A().appendChild(div('sec','Quartale gesamt'));[1,2,3,4].forEach(qq=>quarterAll(y,qq));A().appendChild(div('sec','Trainer im Jahr'));let names=[...new Set(activeTrainings().flatMap(t=>t.trainers.map(r=>r.name)))];names.forEach(n=>trainerSummary(n,y))}
+function quarterAll(y,qq){let names={},tot=0,paid=0;activeTrainings().forEach(t=>{if(yr(t.date)==y&&q(t.date)==qq)t.trainers.forEach(r=>{names[r.name]=1;tot+=r.total;if(isPaid(r.name,y,qq))paid+=r.total})});let all=Object.keys(names).length&&Object.keys(names).every(n=>isPaid(n,y,qq));A().appendChild(div('card '+(all?'paid':''),'<div class="row"><div class="title">Q'+qq+'</div><span class="badge '+(all?'green':'orange')+'">'+(all?'gesamt bezahlt':'offen')+'</span></div><div class="inv"><div><span>Gesamt</span><b>'+eur(tot)+'</b></div><div><span>Bezahlt</span><b>'+eur(paid)+'</b></div><div><span>Offen</span><b>'+eur(tot-paid)+'</b></div></div>'))}
+function trainerSummary(n,y){let tot=0,paid=0,c=0;activeTrainings().forEach(t=>{if(yr(t.date)==y)t.trainers.forEach(r=>{if(r.name==n){tot+=r.total;c++;if(isPaid(n,y,q(t.date)))paid+=r.total}})});let box=div('item','<div class="row"><div><div class="title">'+n+'</div><div class="muted">'+c+' Einsätze</div></div><span class="badge blue">Details & Bezahlstatus</span></div><div class="inv"><div><span>Jahr gesamt</span><b>'+eur(tot)+'</b></div><div><span>Bezahlt</span><b>'+eur(paid)+'</b></div><div><span>Offen</span><b>'+eur(tot-paid)+'</b></div></div>');box.onclick=()=>{openSum=openSum==n?null:n;render()};A().appendChild(box);if(openSum==n)[1,2,3,4].forEach(qq=>{let total=amount(n,y,qq),p=isPaid(n,y,qq);A().appendChild(div('card '+(p?'paid':''),'<div class="row"><div class="title">Q'+qq+'</div><span class="badge '+(p?'green':'orange')+'">'+(p?'bezahlt':'offen')+'</span></div><div class="inv"><div><span>Gesamt</span><b>'+eur(total)+'</b></div><div><span>Bezahlt</span><b>'+eur(p?total:0)+'</b></div><div><span>Offen</span><b>'+eur(p?0:total)+'</b></div></div>'));A().appendChild(btn(p?'Q'+qq+' wieder offen markieren':'Q'+qq+' als bezahlt markieren',p?'secbtn':'ok',()=>{setPaid(n,y,qq,!p);save();render()}))})}
+function list(){
+  H('Datenliste');
+
+  const listed=activeTrainings()
+    .slice()
+    .sort((a,b)=>
+      String(b.date||'').localeCompare(String(a.date||'')) ||
+      String(b.start||'').localeCompare(String(a.start||''))
+    );
+
+  if(!listed.length){
+    A().appendChild(
+      div('card muted','Noch keine Abrechnungen.')
+    );
+    return;
+  }
+
+  listed.forEach(training=>{
+    const trainerBadges=(training.trainers||[])
+      .map(trainer=>
+        '<span class="badge blue">'+
+        trainer.name+': '+eur(trainer.total)+
+        '</span>'
+      )
+      .join(' ');
+
+    const card=div(
+      'card',
+      '<div class="row">'+
+        '<div>'+
+          '<div class="title">'+training.groupName+'</div>'+
+          '<div class="muted">'+
+            training.date+' · '+training.start+
+            (training.end?'–'+training.end:'')+
+          '</div>'+
+        '</div>'+
+        '<b class="money">'+eur(training.payout)+'</b>'+
+      '</div>'+
+      '<div style="margin-top:10px">'+trainerBadges+'</div>'
+    );
+
+    const actions=div('grid g2');
+
+    actions.appendChild(
+      btn('Im Kalender öffnen','secbtn',()=>{
+        mon=String(training.date).slice(0,7);
+        sel=training.date;
+        go('planning');
+      })
+    );
+
+    actions.appendChild(
+      btn('Training löschen','bad',async()=>{
+        if(!confirm(
+          'Dieses eingetragene Training wirklich löschen? '+
+          'Die Beträge werden auch aus der Abrechnung und aus Google Sheets entfernt.'
+        )){
+          return;
+        }
+
+        data.trainings=data.trainings.filter(
+          item=>String(item.id)!==String(training.id)
+        );
+
+        Object.keys(data.plan||{}).forEach(key=>{
+          const entry=data.plan[key];
+
+          if(
+            entry &&
+            String(entry.trainingId||'')===String(training.id)
+          ){
+            data.plan[key]={status:'open'};
+          }
+        });
+
+        clearTimeout(saveTimer);
+        const ok=await pushAppDataToSheet();
+
+        if(ok){
+          await new Promise(resolve=>setTimeout(resolve,1200));
+          await syncFromSheet();
+        }
+
+        render();
+      })
+    );
+
+    card.appendChild(actions);
+    A().appendChild(card);
+  });
+}
+function fab(arr){
+  let f=div('fab');
+  arr.forEach(x=>f.appendChild(btn(x[0],x[1],x[2])));
+  A().appendChild(f);
+}
+
+function render(){
+  A().innerHTML='';
+  const views={home:home,planning:planning,settings:settings,summary:summary,list:list,newEntry:form};
+  const key=view==='new'?'newEntry':view;
+  (views[key]||home)();
+}
+
+function cleanText(x){return String(x||'').trim().toLowerCase().replace(/[^a-z0-9äöüß]/g,'')}
+function cleanTime(x){return String(x||'').trim().replace(' ', '')}
+function findPlanKeyForTraining(t){
+  if(t.planKey)return t.planKey;
+  if(!t.date)return '';
+
+  let schedules=activeSchedulesForDate(t.date);
+
+  let exact=schedules.filter(s=>{
+    let gr=g(s.groupId);
+    return gr && cleanText(gr.name)==cleanText(t.groupName) && cleanTime(s.start)==cleanTime(t.start) && cleanTime(s.end)==cleanTime(t.end);
+  });
+
+  if(exact.length){
+    return (exact[0].seriesId||exact[0].id)+'_'+t.date;
+  }
+
+  let byName=schedules.filter(s=>{
+    let gr=g(s.groupId);
+    return gr && cleanText(gr.name)==cleanText(t.groupName);
+  });
+
+  if(byName.length){
+    return (byName[0].seriesId||byName[0].id)+'_'+t.date;
+  }
+
+  return '';
+}
+
+function syncFromSheet(){
+  return new Promise((resolve)=>{
+    let cb='sheetSync_'+Date.now()+Math.random().toString(36).slice(2);
+    let done=false;
+
+    window[cb]=function(res){
+      done=true;
+      try{
+        if(res && res.appData){
+          data=Object.assign(JSON.parse(JSON.stringify(base)),res.appData);
+          data.trainers=data.trainers||[];
+          data.groups=data.groups||[];
+          data.schedules=(data.schedules||[]).map(normalizeSchedule);
+          data.plan=data.plan||{};
+          data.one=data.one||[];
+          data.trainings=data.trainings||[];
+          data.paidQ=data.paidQ||{};
+          centralSignature=appDataSignature(res.appData);
+
+          // Zentrale, eindeutige Zuordnung für die Monatsübersicht.
+          data.trainings.forEach(training=>{
+            if(
+              training &&
+              training.id &&
+              training.planKey &&
+              Array.isArray(training.trainers) &&
+              training.trainers.length
+            ){
+              data.plan[training.planKey]={
+                status:'filled',
+                trainingId:training.id
+              };
+            }
+          });
+
+          // Verwaiste Verknüpfungen entfernen.
+          Object.keys(data.plan).forEach(key=>{
+            const entry=data.plan[key];
+
+            if(
+              entry &&
+              entry.trainingId &&
+              !data.trainings.some(
+                training=>String(training.id)===String(entry.trainingId)
+              )
+            ){
+              data.plan[key]={status:'open'};
+            }
+          });
+
+        }else{
+          console.warn('Keine zentrale AppData gefunden. Lokaler Stand bleibt nur als Notfall-Cache aktiv.');
+        }
+      }catch(e){
+        console.log('Sync Fehler',e);
+      }
+
+      delete window[cb];
+      resolve();
+    };
+
+    let s=document.createElement('script');
+    s.src=SHEET_URL+'?callback='+cb+'&_='+(Date.now());
+    s.onerror=()=>{if(!done){delete window[cb];resolve();}};
+    document.body.appendChild(s);
+    setTimeout(()=>{if(!done){delete window[cb];resolve();}},4000);
+  });
+}
+
+function runTestsSafe(){
+  try{
+    console.assert(durMin('18:00','19:30')===90,'Test: durMin 90');
+    console.assert(q('2026-05-13')===2,'Test: quarter Q2');
+    console.assert(weekdayOptions(2).includes('selected'),'Test: weekday selected');
+    console.assert(activeSchedulesForDate('2026-01-01').length>0,'Test: active schedules');
+    let test={groupId:'m1',start:'19:00',end:'20:30',sel:['t1','t2'],trainerTimes:{t1:{start:'19:00',end:'20:30'},t2:{start:'19:00',end:'20:30'}}};
+    let c=calc(test);
+    console.assert(Math.round(c.budget)===40,'Test: budget 40');
+    console.assert(c.rows.length===2,'Test: two trainers');
+  }catch(e){
+    console.warn('Tests konnten nicht ausgeführt werden:',e);
+  }
+}
+
+runTestsSafe();
+A().innerHTML='<div class="card"><div class="title">Daten werden geladen …</div><div class="muted">Google Sheets wird synchronisiert.</div></div>';
+syncFromSheet().then(render);
+document.addEventListener('visibilitychange',()=>{
+  if(!document.hidden){
+    syncFromSheet().then(render);
+  }
+});
+
+setInterval(()=>{
+  if(!document.hidden && view!=='new'){
+    syncFromSheet().then(render);
+  }
+},30000);
+</script>
+<script>
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js')
+      .catch(err => console.log('Service Worker Fehler', err));
+  });
+}
+</script>
+</body></html>
