@@ -31,7 +31,7 @@ let openSum = null;
 let moveKey = null;
 let flash = '';
 let centralSignature='';
-function editingActive(){return view==='new'||view==='settings'||moveKey!==null;}
+function editingActive(){return view==='new'||view==='settings'||moveKey!==null||document.activeElement?.matches('input,select,textarea');}
 let syncStatusTimer=null;
 let syncNotice=null;
 function showSyncStatus(text,type='saving',keep=false){
