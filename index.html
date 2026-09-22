@@ -470,6 +470,52 @@ function oneForm(){
     let cancel=btn('Bearbeiten abbrechen','secbtn',()=>{editOneId=null;render()});
     cancel.style.width='auto'; cancel.style.marginLeft='8px';
     card.appendChild(cancel);
+
+    let del=btn('Sondertraining löschen','bad',async()=>{
+      if(!confirm('Sondertraining wirklich vollständig löschen?'))return;
+
+      const deleteId=String(existing.id);
+      const oldGroupId=existing.groupId;
+
+      // Sondertraining und eine eventuell dazugehörige Kalender-Verknüpfung entfernen.
+      data.one=data.one.filter(x=>String(x.id)!==deleteId);
+      Object.keys(data.plan||{}).forEach(k=>{
+        let entry=data.plan[k];
+        if(k==='one_'+deleteId || String(entry?.oneId||'')===deleteId){
+          delete data.plan[k];
+        }
+      });
+
+      // Falls für dieses Sondertraining bereits ein konkreter Trainingseintrag
+      // angelegt wurde, ebenfalls entfernen, damit er nicht in der Abrechnung bleibt.
+      data.trainings=(data.trainings||[]).filter(tr=>
+        String(tr.oneId||'')!==deleteId &&
+        String(tr.planKey||'')!=='one_'+deleteId
+      );
+
+      // Nur eigens für dieses Sondertraining erzeugte Gruppe aufräumen.
+      let old=data.groups.find(x=>x.id===oldGroupId);
+      if(old&&old.oneOnly&&!data.one.some(x=>x.groupId===oldGroupId)){
+        data.groups=data.groups.filter(x=>x.id!==oldGroupId);
+      }
+
+      clearTimeout(saveTimer);
+      const saved=await saveVerified(central=>
+        Array.isArray(central.one) &&
+        !central.one.some(x=>String(x.id)===deleteId) &&
+        !(central.trainings||[]).some(tr=>
+          String(tr.oneId||'')===deleteId ||
+          String(tr.planKey||'')==='one_'+deleteId
+        )
+      );
+      if(!saved)return;
+
+      editOneId=null;
+      await syncFromSheet();
+      render();
+    });
+    del.style.width='auto'; del.style.marginLeft='8px';
+    card.appendChild(del);
   }
 
   A().appendChild(card);
