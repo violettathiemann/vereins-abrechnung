@@ -31,6 +31,7 @@ let openSum = null;
 let moveKey = null;
 let flash = '';
 let centralSignature='';
+function editingActive(){return view==='new'||view==='settings'||moveKey!==null;}
 function load(){try{let saved=JSON.parse(localStorage.getItem(K))||{};let d=Object.assign(JSON.parse(JSON.stringify(base)),saved);d.plan=d.plan||{};d.one=d.one||[];d.trainings=d.trainings||[];d.paidQ=d.paidQ||{};d.schedules=(d.schedules||[]).map(s=>{
   let vf=s.validFrom;
 
@@ -45,9 +46,9 @@ function save(){
   clearTimeout(saveTimer);
   saveTimer=setTimeout(async()=>{
     const ok=await pushAppDataToSheet();
-    if(ok){
+    if(ok && !editingActive()){
       setTimeout(()=>{
-        syncFromSheet().then(render);
+        if(!editingActive()) syncFromSheet().then(render);
       },1200);
     }
   },300);
@@ -804,13 +805,13 @@ runTestsSafe();
 A().innerHTML='<div class="card"><div class="title">Daten werden geladen …</div><div class="muted">Google Sheets wird synchronisiert.</div></div>';
 syncFromSheet().then(render);
 document.addEventListener('visibilitychange',()=>{
-  if(!document.hidden){
+  if(!document.hidden && !editingActive()){
     syncFromSheet().then(render);
   }
 });
 
 setInterval(()=>{
-  if(!document.hidden && view!=='new'){
+  if(!document.hidden && !editingActive()){
     syncFromSheet().then(render);
   }
 },30000);
