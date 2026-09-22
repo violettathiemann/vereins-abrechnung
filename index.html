@@ -578,34 +578,48 @@ function trainingScheduleDetails(s){
     gr.mainFee=+document.getElementById('gm_'+key).value;
     gr.assistantFee=+document.getElementById('ga_'+key).value;
     let validFrom=document.getElementById('gv_'+key).value || (s.validFrom||todayStr());
-    let sameRule=data.schedules.find(x=>(x.seriesId||x.id)===key && (x.validFrom||'1900-01-01')===validFrom);
-    if(sameRule){
-      sameRule.groupId=gr.id;
-      sameRule.w=+document.getElementById('gw_'+key).value;
-      sameRule.start=document.getElementById('gs_'+key).value;
-      sameRule.end=document.getElementById('ge_'+key).value;
-      sameRule.validFrom=validFrom;
-      sameRule.seriesId=key;
-      sameRule.duration=+document.getElementById('gd_'+key).value;
-      sameRule.budget=+document.getElementById('gb_'+key).value;
-      sameRule.mainFee=+document.getElementById('gm_'+key).value;
-      sameRule.assistantFee=+document.getElementById('ga_'+key).value;
-      gr.duration=sameRule.duration;
-      gr.budget=sameRule.budget;
-      gr.mainFee=sameRule.mainFee;
-      gr.assistantFee=sameRule.assistantFee;
-    }else{
-      let newRule={id:id(),seriesId:key,groupId:gr.id,w:+document.getElementById('gw_'+key).value,start:document.getElementById('gs_'+key).value,end:document.getElementById('ge_'+key).value,validFrom:validFrom,duration:+document.getElementById('gd_'+key).value,budget:+document.getElementById('gb_'+key).value,mainFee:+document.getElementById('gm_'+key).value,assistantFee:+document.getElementById('ga_'+key).value};
-      data.schedules.push(newRule);
-      gr.duration=newRule.duration;
-      gr.budget=newRule.budget;
-      gr.mainFee=newRule.mainFee;
-      gr.assistantFee=newRule.assistantFee;
+
+    // Die aktuell geöffnete Terminregel wird wirklich geändert.
+    // Früher wurde bei einem neuen Datum zusätzlich eine zweite Regel angelegt.
+    // Dadurch blieb die alte, spätere Regel "aktuell" und das neue Datum schien
+    // nach erfolgreichem Speichern wieder verschwunden zu sein.
+    let editedRule=data.schedules.find(x=>String(x.id)===String(s.id)) || s;
+    let collision=data.schedules.find(x=>
+      x!==editedRule &&
+      String(x.seriesId||x.id)===String(key) &&
+      String(x.validFrom||'')===String(validFrom)
+    );
+
+    let targetRule=collision || editedRule;
+    targetRule.groupId=gr.id;
+    targetRule.w=+document.getElementById('gw_'+key).value;
+    targetRule.start=document.getElementById('gs_'+key).value;
+    targetRule.end=document.getElementById('ge_'+key).value;
+    targetRule.validFrom=validFrom;
+    targetRule.seriesId=key;
+    targetRule.duration=+document.getElementById('gd_'+key).value;
+    targetRule.budget=+document.getElementById('gb_'+key).value;
+    targetRule.mainFee=+document.getElementById('gm_'+key).value;
+    targetRule.assistantFee=+document.getElementById('ga_'+key).value;
+
+    // Falls für das gewünschte Datum schon eine Regel existierte, wird die
+    // bisher geöffnete Doppelregel entfernt. Ältere historische Regeln bleiben.
+    if(collision && editedRule!==collision){
+      data.schedules=data.schedules.filter(x=>x!==editedRule);
     }
+
+    gr.duration=targetRule.duration;
+    gr.budget=targetRule.budget;
+    gr.mainFee=targetRule.mainFee;
+    gr.assistantFee=targetRule.assistantFee;
+
+    const targetRuleId=targetRule.id;
     clearTimeout(saveTimer);
     const saved=await saveVerified(central=>
       Array.isArray(central.schedules) && central.schedules.some(x=>
-        String(x.seriesId||x.id)===String(key) && String(x.validFrom||'')===String(validFrom)
+        String(x.id||'')===String(targetRuleId) &&
+        String(x.seriesId||x.id)===String(key) &&
+        String(x.validFrom||'')===String(validFrom)
       )
     );
     if(saved){openG=null;await syncFromSheet();render();}
