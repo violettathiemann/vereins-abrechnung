@@ -29,9 +29,10 @@ let openT = null;
 let openG = null;
 let openSum = null;
 let moveKey = null;
+let editOneId = null;
 let flash = '';
 let centralSignature='';
-function editingActive(){return view==='new'||view==='settings'||moveKey!==null||document.activeElement?.matches('input,select,textarea');}
+function editingActive(){return view==='new'||view==='settings'||moveKey!==null||editOneId!==null||document.activeElement?.matches('input,select,textarea');}
 let syncStatusTimer=null;
 let syncNotice=null;
 function showSyncStatus(text,type='saving',keep=false){
@@ -344,6 +345,15 @@ function planCard(p,target){
     go('new');
   }));
 
+  if(String(p.key||'').startsWith('one_') && !p.target){
+    ac.appendChild(btn('Sondertraining bearbeiten','secbtn',()=>{
+      editOneId=String(p.key).slice(4);
+      sel=p.date;
+      render();
+      setTimeout(()=>document.getElementById('od')?.scrollIntoView({behavior:'smooth',block:'center'}),50);
+    }));
+  }
+
   ac.appendChild(btn(status=='cancelled'?'Wieder offen':'Ausgefallen',status=='cancelled'?'secbtn':'bad',()=>{
     data.plan[p.key]=status=='cancelled'?{status:'open'}:{status:'cancelled'};
     save();
@@ -383,42 +393,100 @@ function planCard(p,target){
   }
 }
 function oneForm(){
+  let existing=editOneId?data.one.find(x=>String(x.id)===String(editOneId)):null;
+  let existingGroup=existing?g(existing.groupId):null;
+  let isCustom=!!(existingGroup&&existingGroup.oneOnly);
+  let formDate=existing?existing.date:sel;
+  let formStart=existing?existing.start:'18:00';
+  let formEnd=existing?existing.end:'19:30';
+  let formWeekday=existing?(existing.weekday??new Date(formDate+'T12:00').getDay()):new Date(formDate+'T12:00').getDay();
+
   let card=div('card one-card',
-    '<div class="sec" style="margin-top:0">Einmaliges Training hinzufügen</div>'+
-    '<label class="lab">Datum</label><input id="od" type="date" value="'+sel+'">'+
-    '<label class="lab">Wochentag</label><select id="owd">'+weekdayOptions(new Date(sel+'T12:00').getDay())+'</select><div class="muted">Nur für dieses einmalige Training.</div>'+ 
+    '<div class="sec" style="margin-top:0">'+(existing?'Sondertraining bearbeiten':'Einmaliges Training hinzufügen')+'</div>'+
+    '<label class="lab">Datum</label><input id="od" type="date" value="'+formDate+'">'+
+    '<label class="lab">Wochentag</label><select id="owd">'+weekdayOptions(formWeekday)+'</select><div class="muted">Nur für dieses einmalige Training.</div>'+
     '<label class="lab">Art</label><select id="otype"><option value="existing">Angelegtes Training nutzen</option><option value="custom">Neues einmaliges Training</option></select>'+
-    '<div id="existingOneFields"><label class="lab">Training</label><select id="og">'+data.groups.filter(x=>!x.archived).map(x=>'<option value="'+x.id+'">'+x.name+'</option>').join('')+'</select></div>'+
-    '<div id="customOneFields" style="display:none"><label class="lab">Name</label><input id="ocname" placeholder="z. B. Sondertraining"><div class="grid g2"><div><label class="lab">Dauer</label><input id="ocdur" type="number" step=".25" value="1.5"></div><div><label class="lab">Kontingent €</label><input id="ocbudget" type="number" step=".01" value="40"></div></div><div class="grid g2"><div><label class="lab">Haupttrainer €</label><input id="ocmain" type="number" step=".01" value="20"></div><div><label class="lab">Nachwuchstrainer €</label><input id="ocassist" type="number" step=".01" value="10"></div></div></div>'+
-    '<div class="grid g2"><div><label class="lab">Beginn</label><input id="os" type="time" value="18:00"></div><div><label class="lab">Ende</label><input id="oe" type="time" value="19:30"></div></div>'
+    '<div id="existingOneFields"><label class="lab">Training</label><select id="og">'+data.groups.filter(x=>!x.archived || (existing&&x.id===existing.groupId)).map(x=>'<option value="'+x.id+'">'+x.name+'</option>').join('')+'</select></div>'+
+    '<div id="customOneFields" style="display:none"><label class="lab">Name</label><input id="ocname" placeholder="z. B. Sondertraining"><div class="grid g2"><div><label class="lab">Dauer</label><input id="ocdur" type="number" step=".25" value="'+(isCustom?existingGroup.duration:1.5)+'"></div><div><label class="lab">Kontingent €</label><input id="ocbudget" type="number" step=".01" value="'+(isCustom?existingGroup.budget:40)+'"></div></div><div class="grid g2"><div><label class="lab">Haupttrainer €</label><input id="ocmain" type="number" step=".01" value="'+(isCustom?existingGroup.mainFee:20)+'"></div><div><label class="lab">Nachwuchstrainer €</label><input id="ocassist" type="number" step=".01" value="'+(isCustom?existingGroup.assistantFee:10)+'"></div></div></div>'+
+    '<div class="grid g2"><div><label class="lab">Beginn</label><input id="os" type="time" value="'+formStart+'"></div><div><label class="lab">Ende</label><input id="oe" type="time" value="'+formEnd+'"></div></div>'
   );
-  let smallBtn=btn('Training zum Kalender hinzufügen','ok',()=>{
+
+  let smallBtn=btn(existing?'Änderungen speichern':'Training zum Kalender hinzufügen','ok',async()=>{
+    let item=existing||{id:id()};
+    let oldGroupId=item.groupId;
+
     if(otype.value==='custom'){
       let name=ocname.value.trim();
       if(!name){alert('Bitte Namen für das einmalige Training eingeben.');return;}
-      let gid='onegroup_'+id();
-      data.groups.push({id:gid,name:name,duration:+ocdur.value,budget:+ocbudget.value,mainFee:+ocmain.value,assistantFee:+ocassist.value,oneOnly:true,archived:true,archivedFrom:od.value});
-      data.one.push({id:id(),date:od.value,weekday:+owd.value,groupId:gid,groupName:name,start:os.value,end:oe.value});
+      let gr=(existing&&isCustom)?existingGroup:null;
+      if(!gr){
+        let gid='onegroup_'+id();
+        gr={id:gid,oneOnly:true,archived:true};
+        data.groups.push(gr);
+      }
+      gr.name=name; gr.duration=+ocdur.value; gr.budget=+ocbudget.value;
+      gr.mainFee=+ocmain.value; gr.assistantFee=+ocassist.value; gr.archivedFrom=od.value;
+      item.groupId=gr.id; item.groupName=name;
     }else{
       let gr=g(og.value);
-      data.one.push({id:id(),date:od.value,weekday:+owd.value,groupId:og.value,groupName:gr.name,start:os.value,end:oe.value});
+      item.groupId=og.value; item.groupName=gr.name;
     }
-    mon=od.value.slice(0,7);
-    sel=od.value;
-    save();
+
+    item.date=od.value; item.weekday=+owd.value; item.start=os.value; item.end=oe.value;
+    if(!existing)data.one.push(item);
+
+    // Nicht mehr benötigte, nur für ein Sondertraining angelegte Gruppe aufräumen.
+    if(existing && oldGroupId!==item.groupId){
+      let old=data.groups.find(x=>x.id===oldGroupId);
+      if(old&&old.oneOnly&&!data.one.some(x=>x!==item&&x.groupId===oldGroupId)){
+        data.groups=data.groups.filter(x=>x.id!==oldGroupId);
+      }
+    }
+
+    clearTimeout(saveTimer);
+    const saved=await saveVerified(central=>
+      Array.isArray(central.one) && central.one.some(x=>
+        String(x.id)===String(item.id) &&
+        String(x.date)===String(item.date) &&
+        String(x.start)===String(item.start) &&
+        String(x.end)===String(item.end) &&
+        String(x.groupId)===String(item.groupId)
+      )
+    );
+    if(!saved)return;
+
+    editOneId=null;
+    mon=item.date.slice(0,7);
+    sel=item.date;
+    await syncFromSheet();
     render();
   });
+
   smallBtn.style.width='auto';
   smallBtn.style.padding='14px 22px';
   card.appendChild(smallBtn);
+
+  if(existing){
+    let cancel=btn('Bearbeiten abbrechen','secbtn',()=>{editOneId=null;render()});
+    cancel.style.width='auto'; cancel.style.marginLeft='8px';
+    card.appendChild(cancel);
+  }
+
   A().appendChild(card);
+
+  otype.value=isCustom?'custom':'existing';
+  if(existing&&!isCustom)og.value=existing.groupId;
+  if(isCustom)ocname.value=existing.groupName||existingGroup?.name||'';
+  existingOneFields.style.display=otype.value==='existing'?'block':'none';
+  customOneFields.style.display=otype.value==='custom'?'block':'none';
+
   document.getElementById('od').onchange=()=>{
     let d=new Date(od.value+'T12:00');
     if(!isNaN(d))owd.value=d.getDay();
   };
   document.getElementById('otype').onchange=()=>{
-    document.getElementById('existingOneFields').style.display=otype.value==='existing'?'block':'none';
-    document.getElementById('customOneFields').style.display=otype.value==='custom'?'block':'none';
+    existingOneFields.style.display=otype.value==='existing'?'block':'none';
+    customOneFields.style.display=otype.value==='custom'?'block':'none';
   };
 }
 function settings(){H('Einstellungen');if(flash){A().appendChild(div('card green','<b>'+flash+'</b>'));flash=''}let tabs=div('grid g2');['trainer','trainings'].forEach(t=>{let b=div('tile tabtile '+(tab==t?'sel':''),t=='trainer'?'Trainer<span class="sub">Trainer verwalten</span>':'Trainings<span class="sub">Trainings verwalten</span>');b.onclick=()=>{tab=t;render()};tabs.appendChild(b)});A().appendChild(tabs);tab=='trainer'?trainerSettings():trainingSettings()}
