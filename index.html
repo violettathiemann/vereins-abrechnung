@@ -33,13 +33,39 @@ let flash = '';
 let centralSignature='';
 function editingActive(){return view==='new'||view==='settings'||moveKey!==null;}
 let syncStatusTimer=null;
+let syncNotice=null;
 function showSyncStatus(text,type='saving',keep=false){
   let el=document.getElementById('syncStatus');
   if(!el){el=document.createElement('div');el.id='syncStatus';document.body.appendChild(el);}
   el.className='sync-status sync-'+type;el.textContent=text;el.style.display='block';
+  syncNotice={text,type};
   clearTimeout(syncStatusTimer);
-  if(!keep)syncStatusTimer=setTimeout(()=>{el.style.display='none';},type==='ok'?2500:4500);
+  if(type==='saving' && !keep)syncStatusTimer=setTimeout(()=>{el.style.display='none';},4500);
+  showInlineSyncNotice();
 }
+
+function showInlineSyncNotice(){
+  const old=document.getElementById('inlineSyncNotice');
+  if(old)old.remove();
+  if(!syncNotice)return;
+  const app=A();
+  if(!app)return;
+  const box=document.createElement('div');
+  box.id='inlineSyncNotice';
+  box.className='card '+(syncNotice.type==='ok'?'green':syncNotice.type==='error'?'red':'orange');
+  box.style.borderWidth='2px';
+  box.style.fontSize='17px';
+  box.style.fontWeight='900';
+  box.style.position='relative';
+  box.style.zIndex='4';
+  box.innerHTML='<div>'+syncNotice.text+'</div><div class="muted" style="color:#f1f5f9;margin-top:5px">'+
+    (syncNotice.type==='ok'?'Die Daten wurden in Google Sheets bestätigt.':syncNotice.type==='error'?'Die Änderung wurde nicht bestätigt. Bitte erneut versuchen.':'Bitte kurz warten, bis die Speicherung bestätigt ist.')+'</div>';
+  const header=app.querySelector('header');
+  if(header && header.nextSibling)app.insertBefore(box,header.nextSibling);
+  else if(header)app.appendChild(box);
+  else app.insertBefore(box,app.firstChild);
+}
+
 function wait(ms){return new Promise(r=>setTimeout(r,ms));}
 async function verifyCentral(test,tries=6){
   for(let i=0;i<tries;i++){
@@ -734,6 +760,7 @@ function render(){
   const views={home:home,planning:planning,settings:settings,summary:summary,list:list,newEntry:form};
   const key=view==='new'?'newEntry':view;
   (views[key]||home)();
+  showInlineSyncNotice();
 }
 
 function cleanText(x){return String(x||'').trim().toLowerCase().replace(/[^a-z0-9äöüß]/g,'')}
